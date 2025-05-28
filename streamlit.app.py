@@ -95,17 +95,38 @@ with tab1:
 
 # 📊 탭 2: 시각화
 with tab2:
-    st.subheader("📉 기준연령별 예측 손실액 변화")
-    fig1, ax1 = plt.subplots()
-    sns.lineplot(data=df_simulation, x="기준연령", y="예측 손실액 합계(백만)", marker="o", ax=ax1)
-    ax1.set_ylabel("예측 손실액(백만)")
-    st.pyplot(fig1)
+    st.subheader("📊 기준연령별 예측 요약 시각화")
 
-    st.subheader("🟩 기준연령별 손실 절감률")
-    fig2, ax2 = plt.subplots()
-    sns.barplot(data=df_simulation, x="기준연령", y="절감률(%)", palette="crest", ax=ax2)
-    ax2.set_ylabel("절감률(%)")
-    st.pyplot(fig2)
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("**예측 손실액(백만)**")
+        fig1, ax1 = plt.subplots(figsize=(6, 3))
+        sns.lineplot(data=df_simulation, x="기준연령", y="예측 손실액 합계(백만)", marker="o", color="#4B8BBE", ax=ax1)
+        ax1.set_xlabel("기준연령")
+        ax1.set_ylabel("")
+        ax1.grid(True, linestyle="--", alpha=0.3)
+        fig1.tight_layout()
+        st.pyplot(fig1)
+
+    with col2:
+        st.markdown("**절감률(%)**")
+        fig2, ax2 = plt.subplots(figsize=(6, 3))
+        sns.barplot(data=df_simulation, x="기준연령", y="절감률(%)", palette="pastel", ax=ax2)
+        ax2.set_xlabel("기준연령")
+        ax2.set_ylabel("")
+        ax2.grid(True, linestyle="--", alpha=0.3)
+        fig2.tight_layout()
+        st.pyplot(fig2)
+
+    # 추가 정보는 접어서 제공
+    with st.expander("📌 그래프 해석 가이드 보기"):
+        st.markdown("""
+        - 왼쪽 그래프는 기준연령에 따른 예측 손실액(백만 원 단위) 추이를 보여줍니다.  
+        - 오른쪽 그래프는 기준연령을 변경했을 때 얼마나 손실을 줄일 수 있는지를 백분율로 보여줍니다.
+        - 절감률은 기준연령이 65세일 때를 기준으로 계산됩니다.
+        """)
+
 
 # 📋 탭 3: 데이터 테이블
 with tab3:
