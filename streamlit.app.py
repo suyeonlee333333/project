@@ -22,11 +22,15 @@ def load_data():
     
     df_merged = pd.merge(df_train, df_population, on="연도-월", how="inner")
     return df_merged
-
 def calculate_adjusted_elderly_fixed(df, age_threshold):
-    age_cols = [col for col in df.columns if col.isdigit() and int(col) >= age_threshold]
+    age_cols = []
+    for col in df.columns:
+        col_str = str(col)
+        if col_str.isdigit() and int(col_str) >= age_threshold:
+            age_cols.append(col)
     df["조정 고령 인구수"] = df[age_cols].sum(axis=1)
     return df
+
 
 def simulate_rf_single_variable_loss(df_original, model, age_range=(65, 75)):
     results = []
